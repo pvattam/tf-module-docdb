@@ -42,6 +42,6 @@ resource "aws_docdb_cluster" "docdb" {
   master_password         = data.aws_ssm_parameter.password.value
   skip_final_snapshot     = true
   storage_encrypted       = true
-  vpc_security_group_ids = [aws_security_group.main.id]
-  db_subnet_group_name = aws_docdb_subnet_group.main.name
+  vpc_security_group_ids  = [aws_security_group.main.id]
+  db_subnet_group_name    = aws_docdb_subnet_group.main.name
 }
