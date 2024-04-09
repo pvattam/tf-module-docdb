@@ -35,7 +35,7 @@ resource "aws_security_group" "main" {
 }
 
 
-resource "aws_docdb_cluster" "docdb" {
+resource "aws_docdb_cluster" "main" {
   cluster_identifier      = "${local.prefix}.docdb"
   engine                  = var.engine
   engine_version          = var.engine_version
@@ -45,4 +45,11 @@ resource "aws_docdb_cluster" "docdb" {
   storage_encrypted       = true
   vpc_security_group_ids  = [aws_security_group.main.id]
   db_subnet_group_name    = aws_docdb_subnet_group.main.name
+}
+
+resource "aws_docdb_cluster_instance" "cluster_instances" {
+  count              = var.instance_count
+  identifier         = "${local.prefix}.docdb-${count.index + 1}"
+  cluster_identifier = aws_docdb_cluster.main.id
+  instance_class     = var.instance_class
 }
