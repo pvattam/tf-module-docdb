@@ -1,18 +1,18 @@
 resource "aws_docdb_cluster_parameter_group" "main" {
-  name   = "${local.prefix}.docdb"
+  name   = "${local.prefix}-docdb"
   family = var.parameter_group_family
   tags = merge(var.tags, {Name =  "${local.prefix}.docdb"})
 }
 
 resource "aws_docdb_subnet_group" "main" {
-  name       = "${local.prefix}.docdb"
+  name       = "${local.prefix}-docdb"
   subnet_ids = var.subnets
-  tags = merge(var.tags, {Name =  "${local.prefix}.docdb"})
+  tags = merge(var.tags, {Name =  "${local.prefix}-docdb"})
 }
 
 resource "aws_security_group" "main" {
-  name        = "${local.prefix}.docdb"
-  description = "${local.prefix}.docdb"
+  name        = "${local.prefix}-docdb"
+  description = "${local.prefix}-docdb"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -31,12 +31,12 @@ resource "aws_security_group" "main" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge(var.tags, {Name =  "${local.prefix}.docdb"})
+  tags = merge(var.tags, {Name =  "${local.prefix}-docdb"})
 }
 
 
 resource "aws_docdb_cluster" "main" {
-  cluster_identifier      = "${local.prefix}.docdb"
+  cluster_identifier      = "${local.prefix}-docdb"
   engine                  = var.engine
   engine_version          = var.engine_version
   master_username         = data.aws_ssm_parameter.username.value
@@ -49,7 +49,7 @@ resource "aws_docdb_cluster" "main" {
 
 resource "aws_docdb_cluster_instance" "cluster_instances" {
   count              = var.instance_count
-  identifier         = "${local.prefix}.docdb-${count.index + 1}"
+  identifier         = "${local.prefix}-docdb-${count.index + 1}"
   cluster_identifier = aws_docdb_cluster.main.id
   instance_class     = var.instance_class
 }
