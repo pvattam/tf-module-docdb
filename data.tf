@@ -1,7 +1,7 @@
 data "aws_ssm_parameter" "username" {
-  name  = "${local.prefix}.docdb.username"
+  name  = "${var.env}.${local.project_name}.docdb.username"
 }
 
 data "aws_ssm_parameter" "password" {
-  name  = "${local.prefix}.docdb.password"
+  name  = "${var.env}.${local.project_name}.docdb.password"
 }
